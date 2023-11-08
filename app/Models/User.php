@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 use App\Tenancy\BelongsToTenant;
+use Filament\Models\Contracts\HasTenants;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Scopes\Searchable;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +17,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasTenants
 {
     use HasUuids;
     use Notifiable;
@@ -21,6 +26,7 @@ class User extends Authenticatable
     use SoftDeletes;
     use HasApiTokens;
     use BelongsToTenant;
+    use HasSuperAdmin;
 
     protected $fillable = [
         'name',
@@ -56,5 +62,19 @@ class User extends Authenticatable
     public function isSuperAdmin(): bool
     {
         return in_array($this->email, config('auth.super_admins'));
+    }
+    public function getTenants(Panel $panel): array|\Illuminate\Support\Collection
+    {
+        return $this->teams;
+    }
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->teams->contains($tenant);
     }
 }
