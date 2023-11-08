@@ -46,11 +46,6 @@ class Company extends Model
         return $this->hasMany(Company::class);
     }
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
     public function companySettings()
     {
         return $this->hasMany(CompanySetting::class);
