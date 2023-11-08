@@ -2,75 +2,65 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use App\Models\CompanySetting;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\User;
 
 class CompanySettingPolicy
 {
-    use HandlesAuthorization;
-
     /**
-     * Determine whether the companySetting can view any models.
+     * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('view-any CompanySetting');
     }
 
     /**
-     * Determine whether the companySetting can view the model.
+     * Determine whether the user can view the model.
      */
-    public function view(User $user, CompanySetting $model): bool
+    public function view(User $user, CompanySetting $companysetting): bool
     {
-        return true;
+        return $user->can('view CompanySetting');
     }
 
     /**
-     * Determine whether the companySetting can create models.
+     * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('create CompanySetting');
     }
 
     /**
-     * Determine whether the companySetting can update the model.
+     * Determine whether the user can update the model.
      */
-    public function update(User $user, CompanySetting $model): bool
+    public function update(User $user, CompanySetting $companysetting): bool
     {
-        return true;
+        return $user->can('update CompanySetting');
     }
 
     /**
-     * Determine whether the companySetting can delete the model.
+     * Determine whether the user can delete the model.
      */
-    public function delete(User $user, CompanySetting $model): bool
+    public function delete(User $user, CompanySetting $companysetting): bool
     {
-        return true;
+        return $user->can('delete CompanySetting');
     }
 
     /**
-     * Determine whether the user can delete multiple instances of the model.
+     * Determine whether the user can restore the model.
      */
-    public function deleteAny(User $user): bool
+    public function restore(User $user, CompanySetting $companysetting): bool
     {
-        return true;
+        return $user->can('restore CompanySetting');
     }
 
     /**
-     * Determine whether the companySetting can restore the model.
+     * Determine whether the user can permanently delete the model.
      */
-    public function restore(User $user, CompanySetting $model): bool
+    public function forceDelete(User $user, CompanySetting $companysetting): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the companySetting can permanently delete the model.
-     */
-    public function forceDelete(User $user, CompanySetting $model): bool
-    {
-        return false;
+        return $user->can('force-delete CompanySetting');
     }
 }

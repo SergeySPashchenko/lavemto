@@ -3,25 +3,25 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
-
+use App\Models\Permission;
 use App\Models\User;
 
-class UserPolicy
+class PermissionPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any User');
+        return $user->can('view-any Permission');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Permission $permission): bool
     {
-        return $user->can('view User');
+        return $user->can('view Permission');
     }
 
     /**
@@ -29,38 +29,38 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create User');
+        return $user->can('create Permission');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Permission $permission): bool
     {
-        return $user->can('update User');
+        return $user->can('update Permission');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Permission $permission): bool
     {
-        return $user->can('delete User');
+        return $user->can('delete Permission');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Permission $permission): bool
     {
-        return $user->can('restore User');
+        return $user->can('restore Permission');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Permission $permission): bool
     {
-        return $user->can('force-delete User');
+        return $user->can('force-delete Permission');
     }
 }

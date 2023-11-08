@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             'guard_name' => 'web',
 
         ]);
-        $role->syncPermissions($permissions);
+//        $role->syncPermissions($permissions);
+//        $permissions->sync([])
         $company = \App\Models\Company::factory()->create([
             'name' => 'Thconnect',
             'email' => 'admin@thconect.nl',
@@ -44,12 +45,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'phone' => '+380508553205',
             'country' => 'UA',
+            'company_id' => $company->id,
             //            'slug' => Str::slug($this->faker->firstName.' '.$this->faker->lastName),
             'password' => Hash::make('admin'),
         ]);
-
+        $company->users()->sync([$user->id]);
         setPermissionsTeamId($company->id);
-        $user->assignRole(['Super Admin']);
+        $user->assignRole($role->id);
         $user->companies()->sync($company->id, $user->id);
         setPermissionsTeamId($session_team_id);
     }
